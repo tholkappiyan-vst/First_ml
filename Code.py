@@ -10,8 +10,8 @@ st.title("Smile / Non-Smile Detection")
 st.write("Upload an image and the model will predict whether it is a smile or non-smile.")
 
 
-smile_data = gb.glob("dataset/smile/*.jpg")
-non_smile_data = gb.glob("dataset/non_smile/*.jpg")
+smile_data = gb.glob("*.jpg")
+non_smile_data = gb.glob("*.jpg")
 
 data = []
 label = []
