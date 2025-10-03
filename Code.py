@@ -3,8 +3,8 @@ import streamlit as st
 from PIL import Image
 import numpy as np
 import glob as gb
-from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import StandardScaler
+from scikit-learn.linear_model import LogisticRegression
+from scikit-learn.preprocessing import StandardScaler
 
 st.title("Smile / Non-Smile Detection")
 st.write("Upload an image and the model will predict whether it is a smile or non-smile.")
