@@ -1,4 +1,5 @@
 
+# app.py
 import streamlit as st
 from PIL import Image
 import numpy as np
@@ -9,48 +10,56 @@ from sklearn.preprocessing import StandardScaler
 st.title("Smile / Non-Smile Detection")
 st.write("Upload an image and the model will predict whether it is a smile or non-smile.")
 
-
-smile_data = gb.glob("Dataset/Smiled/*.jpg")
-non_smile_data = gb.glob("Dataset/Non_smiled/*.jpg")
+# --------------------------
+# Load training data
+# --------------------------
+smile_data = gb.glob("dataset/smile/*.jpg")
+non_smile_data = gb.glob("dataset/non_smile/*.jpg")
 
 data = []
 label = []
 
+# Resize all images to 64x64
 for image in smile_data:
-    img = Image.open(image).convert('L')
+    img = Image.open(image).convert('L').resize((64, 64))
     data.append(np.array(img).flatten() / 255.0)
     label.append(1)
 
 for image in non_smile_data:
-    img = Image.open(image).convert('L')
+    img = Image.open(image).convert('L').resize((64, 64))
     data.append(np.array(img).flatten() / 255.0)
     label.append(0)
 
 data = np.array(data)
 label = np.array(label)
 
-
+# --------------------------
+# Scale training data and train model
+# --------------------------
 scaler = StandardScaler()
-x_train_scaled = scaler.fit_transform(data)  # Fit on training data
+x_train_scaled = scaler.fit_transform(data)
+
 model = LogisticRegression(max_iter=1000)
 model.fit(x_train_scaled, label)
 
-
+# --------------------------
+# Streamlit file uploader
+# --------------------------
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
-    
-    image = Image.open(uploaded_file).convert('L')
+    # Load uploaded image and resize to same size as training
+    image = Image.open(uploaded_file).convert('L').resize((64, 64))
     st.image(image, caption="Uploaded Image", use_column_width=True)
     
-    
+    # Preprocess uploaded image
     image_array = np.array(image).flatten() / 255.0
     image_array = image_array.reshape(1, -1)
     
-
-    image_scaled = scaler.transform(image_array)  
+    # Scale uploaded image using the SAME scaler fitted on training data
+    image_scaled = scaler.transform(image_array)
     
-
+    # Predict
     prediction = model.predict(image_scaled)[0]
     probability = model.predict_proba(image_scaled)[0]
     
