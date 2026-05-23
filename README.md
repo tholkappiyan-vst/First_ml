@@ -24,13 +24,4 @@ A lightweight, interactive machine learning web application built using **Python
 
 ---
 
-## 📁 Repository Structure
 
-```text
-First_ml/
-├── src/
-│   └── model_training.py       # Script containing the training workflow
-├── app.py                      # Main Streamlit application entry point
-├── logistic_model.pkl          # Serialized (Pickled) trained model weights
-├── requirements.txt            # Python dependencies (Streamlit, scikit-learn, etc.)
-└── README.md                   # Project documentation landing page
